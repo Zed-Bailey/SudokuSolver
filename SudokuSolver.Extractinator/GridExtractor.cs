@@ -12,26 +12,16 @@ namespace SudokuSolver.Extractinator;
 public class GridExtractor
 {
 
-    private ResourcesTracker _tracker = new();
-    private Mat _sudokuGrid;
-    
-    public GridExtractor(string imagePath)
-    {
-        _sudokuGrid = _tracker.T(new Mat("static_sudoku.jpg", ImreadModes.Grayscale));
-        using var outerBox = new Mat(_sudokuGrid.Size(), MatType.CV_8UC1);
-    }
+   /// <summary>
+   /// Calls a python script that will extract the data from the image
+   /// </summary>
+   /// <param name="image">the image path</param>
+   /// <returns>the data from the image in a format suitable for the SudokuSolver</returns>
+   public static int[,] ReadDataFromImage(string image)
+   {
 
-    /// <summary>
-    /// Run pre-processing operations on the image
-    /// </summary>
-    public void PreProcess()
-    {
-        
-    }
-    
-    void DisposeOf()
-    {
-        _tracker.Dispose();
-    }
+      return new int[,] { };
+   }
+
     
 }

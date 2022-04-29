@@ -21,7 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SudokuSolver.Extractinator\SudokuSolver.Extractinator.csproj" />
     <ProjectReference Include="..\SudokuSolver\SudokuSolver.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="resources" />
   </ItemGroup>
 
 </Project>

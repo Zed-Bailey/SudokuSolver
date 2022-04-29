@@ -266,6 +266,12 @@ public class Sudoku
         
             if (sum != 45) return false;
         }
+        
+        // TODO
+        // check for duplicate values in any row/column/square
+        //
+        
+        
 
     
         return true;
