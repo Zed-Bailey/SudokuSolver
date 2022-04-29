@@ -62,6 +62,9 @@ var sudoku = new Sudoku(boardValues);
 Sudoku.PrintBoard(sudoku.CurrentBoard);
 // PrintBoard(sudoku.Solve());
 
+Console.WriteLine("Start....");
+Console.ReadKey();
+
 for (var i = 0; i <= 10_000; i++)
 {
     var solve = sudoku.Solve();
