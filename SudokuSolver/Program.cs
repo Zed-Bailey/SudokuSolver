@@ -85,7 +85,7 @@ Console.ReadKey();
 for (var i = 0; i <= 10_000; i++)
 {
     var solve = sudoku.Solve();
-    if (!sudoku.ValidSolve(solve))
+    if (!sudoku.ValidSolve())
     {
         Sudoku.PrintBoard(sudoku.CurrentBoard);
         Console.WriteLine("Resetting the board");
