@@ -196,42 +196,63 @@ public class Sudoku
         // return cells;
 
     }
+
+    private List<Cell> CellsInColumn(Cell[,] grid, int colIndex, int gridHeight)
+    {
+        var cells = new List<Cell>();
+
+        for (var i = 0; i < gridHeight; i++)
+        {
+            cells.Add(grid[i, colIndex]);
+        }
+        
+        return cells;
+    }
     
+    private List<Cell> CellsInRow(Cell[,] grid, int rowIndex, int gridLength)
+    {
+        var cells = new List<Cell>();
+
+        for (var i = 0; i < gridLength; i++)
+        {
+            cells.Add(grid[rowIndex, i]);
+        }
+
+        
+        return cells;
+    }
+    
+
     /// <summary>
     /// Checks that each row and column of the board add up to 45.
     /// 1+2+3+4+5+6+7+8+9 = 45
+    /// and that there are no duplicate values in any row,column or square
     /// </summary>
-    /// <param name="cells">The cells to check</param>
     /// <returns>Returns true when valid, false when not</returns>
-    public bool ValidSolve(Cell[,] cells)
+    public bool ValidSolve()
     {
-        // store the sum of the row/column/square, for a row/column/square to be valid it must sum to 45
-        int sum;
+
         // check every row
         for(var y = 0; y < Height; y++)
         {
-            sum = 0;
-            for (var rowCell = 0; rowCell < Length; rowCell++)
-            {
-            
-                sum += cells[y,rowCell].Value;
-            }
-        
-        
-            if (sum != 45) return false;
+            if (CellsInRow(CurrentBoard, y, Length).Sum(x => x.Value) != 45)
+                return false;
         }
     
-         
+        // resource for checking if duplicates exist in the list
+        // https://stackoverflow.com/questions/5080538/c-sharp-determine-duplicate-in-list
+        
+        
         for (var x = 0; x < Length; x++)
         {
-            sum = 0;
-            // iterate over each value in the current cells column (y axis)
-            for (var colCell = 0; colCell < Height; colCell++)
-            {
-                sum += cells[colCell,x].Value;
-            }
-
-            if (sum != 45) return false;
+            // fetch cells for current column
+            var cells = CellsInColumn(CurrentBoard, x, Height); 
+            // check if cells sum to 45
+            if (cells.Sum(c => c.Value) != 45)
+                return false;
+            
+            // check if duplicates exists
+            if (cells.Count != cells.Distinct().Count()) return false;
         }
     
         //
@@ -252,28 +273,30 @@ public class Sudoku
             (Range(6,3),Range(0,3)),  (Range(6,3),Range(3,3)),    (Range(6,3),Range(6,3))
         };
         
+        // loop through each tuple 
         foreach (var (yRange, xRange) in squareRanges)
         {
-            sum = 0;
+            var sum = 0;
+            var list = new List<int> {1, 2, 3, 4, 5, 6, 7, 8, 9};
             foreach (var y in yRange)
             {
                 foreach (var x in xRange)
                 {
-                    var value = cells[y, x].Value;
+                    var value = CurrentBoard[y, x].Value;
                     sum += value;
+                    // if false is returned then value has already been removed meaning
+                    // it's a duplicate or it's -1
+                    if (!list.Remove(value)) return false;
                 }
             }
-        
+            
             if (sum != 45) return false;
+            // if values are still in list then there were duplicates in the square or empty(-1) cells
+            if (list.Count > 0) return false;
         }
         
-        // TODO
-        // check for duplicate values in any row/column/square
-        //
         
-        
-
-    
+        // if we get to here then the list is valid
         return true;
     }
     
