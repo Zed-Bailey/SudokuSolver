@@ -1,6 +1,4 @@
-﻿using OpenCvSharp;
-
-namespace SudokuSolver.Extractinator;
+﻿namespace SudokuSolver.Extractinator;
 
 // this sudoku grid extractor is ported from c++ following the below articles
 // https://aishack.in/tutorials/sudoku-grabber-opencv-detection/
