@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver", "SudokuSolve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver.Test", "SudokuSolver.Test\SudokuSolver.Test.csproj", "{C6FFD94D-6656-402B-BF2B-349E796C3E4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuSolver.Extractinator", "SudokuSolver.Extractinator\SudokuSolver.Extractinator.csproj", "{3C5D45C2-D073-4E70-B7D1-A3528352766C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{C6FFD94D-6656-402B-BF2B-349E796C3E4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6FFD94D-6656-402B-BF2B-349E796C3E4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6FFD94D-6656-402B-BF2B-349E796C3E4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C5D45C2-D073-4E70-B7D1-A3528352766C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C5D45C2-D073-4E70-B7D1-A3528352766C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C5D45C2-D073-4E70-B7D1-A3528352766C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C5D45C2-D073-4E70-B7D1-A3528352766C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
