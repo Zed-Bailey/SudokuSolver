@@ -4,6 +4,69 @@
 
 <h3>solve</h3>
 
-@code {
+<style>
+td {
+    width: 50px ;
+    height: 50px ;
+    text-align: center;
+}
+
+tr:nth-of-type(3) td {
+     border-bottom: 3px solid red !important;
+}
+
+tr:nth-of-type(6) td {
+     border-bottom: 3px solid red !important;
+}
+
+
+td:nth-of-type(3) {
+     border-right: 3px solid red !important;
+}
+td:nth-of-type(6) {
+     border-right: 3px solid red !important;
+}
+
+td > input {
+    width: 50px;
+    height: 50px; 
+    text-align: center;
+}
+.entered {
+    background-color: darkseagreen;
+}
+
+.negativeOne {
+    background-color: #ece1be;
+}
+
+</style>
+
+
+<table >
+    <tbody>
+    @for (var r = 0; r < _service.SudokuGrid?.Height; r++)
+    {
+        <tr>
+            @for (var c = 0; c < _service.SudokuGrid?.Width; c++)
+            {
+                var value = _service.SudokuGrid.Cells[r, c];
+                var style = value == -1 ? "negativeOne" : "entered";
+                
+                <td class="@style">@value</td>    
+            }
+        </tr> 
+    }
     
+    </tbody>
+</table>
+
+
+@code {
+    Grid _gridCopy;
+    protected override void OnInitialized()
+    {
+        _gridCopy = _service.SudokuGrid;
+    }
+
 } 
