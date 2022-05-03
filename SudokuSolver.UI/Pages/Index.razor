@@ -1,6 +1,8 @@
 @page "/"
 @using SudokuSolver.UI.Data
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @inject GridService _service
+@inject NavigationManager _navigation
 
 <PageTitle>Sudoku Input</PageTitle>
 
@@ -36,11 +38,9 @@ td > input {
 </style>
 
 
-
-
 <table class="sudokuGrid">
     <tbody>
-    @for (var r = 0; r < 9; r++)
+    @for (var r = 0; r < Height; r++)
     {
         var row = r;
         <tr> 
@@ -62,14 +62,39 @@ td > input {
 <button class="btn-primary" @onclick="SolveClicked" >Solve</button>
 
 @code {
-    string[,] cells = new string[9, 9];
+    const int Width = 9;
+    const int Height = 9;
     
+    string[,] cells = new string[Height, Width];
+
+    protected override void OnInitialized()
+    {
+        if (_service.SudokuGrid != null)
+        {
+            _service.ClearGrid();
+        }
+    }
+
     void SolveClicked()
     {
+        var grid = new Grid(Width, Height);
+        
         // generate a grid from the cells replacing empty ones with -1
-        for(var i = 0; i < cells.Length; i++) {}
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                // a cell by default has a value of null, it will have a value of an empty string when 
+                // a user enters anything that's not a digit in 1-9
+                grid.Cells[y, x] = (cells[y, x] == "" || cells[y,x] == null) ? -1 : int.Parse(cells[y, x]);
+            }
+        }
+
+        _service.SudokuGrid = grid;
         
         // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+        
     }
 
 }
