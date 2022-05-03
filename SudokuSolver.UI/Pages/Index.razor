@@ -58,8 +58,16 @@ td > input {
     </tbody>
 </table>
 
+<div class="mt-3">
+    <button class="btn btn-primary" @onclick="SolveClicked" >Solve</button>
 
-<button class="btn-primary" @onclick="SolveClicked" >Solve</button>
+    <div class="btn-group" role="group">
+        <button class="btn btn-secondary" @onclick="EasyBoardExample">Easy Board</button>  
+        <button class="btn btn-secondary" @onclick="HardBoardExample">Hard Board</button>  
+        <button class="btn btn-secondary" @onclick="ExpertBoardExample">Expert Board</button>  
+    </div>
+</div>
+
 
 @code {
     const int Width = 9;
@@ -75,22 +83,87 @@ td > input {
         }
     }
 
+    void ExpertBoardExample()
+    {
+        var boardValues = new int[,]
+        {
+            {4,-1,-1,   6,-1,-1,   -1,1,-1},
+            {-1,-1,-1,  -1,-1,-1,   6,-1,-1},
+            {-1,-1,-1,  -1,-1,9,    8,-1,2},
+    
+            {-1,7,-1,   4,-1,-1,  -1,-1,-1},
+            {-1,-1,-1,  -1,6,-1,  -1,-1,-1},
+            {1,-1,5,    9,-1,-1,  -1,4,-1},
+    
+            {5,-1,-1,  -1,-1,-1,  -1,8,-1},
+            {2,-1,8,    1,-1,-1,  -1,-1,-1},
+            {-1,-1,-1,  -1,-1,-1,  7,3,-1},
+        };
+        _service.SudokuGrid = new Sudoku(boardValues);
+        // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+    }
+
+    void EasyBoardExample()
+    {
+        var boardValues = new int[,]
+        {
+            {-1,7,-1,  -1,2,-1,  -1,4,6},
+            {-1,6,-1,  -1,-1,-1,   8,9,-1},
+            {2,-1,-1,  8,-1,-1,   7,1,5},
+            
+            {-1,8,4,   -1,9,7,   -1,-1,-1},
+            {7,1,-1,   -1,-1,-1,  -1,5,9},
+            {-1,-1,-1,  1,3,-1,   4,8,-1},
+            
+            {6,9,7,    -1,-1,2,    -1,-1,8},
+            {-1,5,8,   -1,-1,-1,   -1,6,-1},
+            {4,3,-1,   -1,8,-1,    -1,7,-1},
+        };
+        _service.SudokuGrid = new Sudoku(boardValues);
+        // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+    }
+
+    void HardBoardExample()
+    {
+        var boardValues = new int[,]
+        {
+            {-1,-1,4,  -1,-1,-1,  -1,-1,-1},
+            {8,1,-1,  -1,-1,9,    2,7,-1},
+            {-1,-1,7,  -1,5,-1,   9,-1,-1},
+            
+            {1,-1,5,  -1,-1,6,  -1,-1,3},
+            {3,-1,-1,  1,-1,-1,  -1,-1,-1},
+            {-1,-1,-1,  5,7,-1,  -1,6,-1},
+            
+            {4,5,1,  -1,9,-1,  -1,-1,-1},
+            {-1,3,-1,  -1,1,5,  -1,-1,-1},
+            {9,-1,-1,  -1,3,-1,  -1,-1,6},
+        };
+        _service.SudokuGrid = new Sudoku(boardValues);
+        // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+    }
+    
+    
     void SolveClicked()
     {
-        var grid = new Grid(Width, Height);
+
+        var grid = new int[Height, Width];
         
-        // generate a grid from the cells replacing empty ones with -1
+        // parse the table cells into an int grid, replacing empty/null values with -1
         for (var y = 0; y < Height; y++)
         {
             for (var x = 0; x < Width; x++)
             {
                 // a cell by default has a value of null, it will have a value of an empty string when 
                 // a user enters anything that's not a digit in 1-9
-                grid.Cells[y, x] = (cells[y, x] == "" || cells[y,x] == null) ? -1 : int.Parse(cells[y, x]);
+                grid[y, x] = (cells[y, x] == "" || cells[y,x] == null) ? -1 : int.Parse(cells[y, x]);
             }
         }
 
-        _service.SudokuGrid = grid;
+        _service.SudokuGrid = new Sudoku(grid);
         
         // navigate to the solve page
         _navigation.NavigateTo("/solve");
