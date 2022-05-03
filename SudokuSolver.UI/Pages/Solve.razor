@@ -38,8 +38,15 @@
         background-color: #ece1be;
     }
 </style>
+@if (_solved)
+{
+    <h3>Solved on iteration: @_iteration</h3>    
+}
+else
+{
+    <h3>Solve iteration: @_iteration</h3>
+}
 
-<h3>Solve iteration: @_iteration</h3>
 
 <table >
     <tbody>
@@ -60,25 +67,29 @@
     
      @for (var r = 0; r < Sudoku.Height; r++)
         {
-            var row = r;
             <tr> 
-                <td>@_sudoku.CurrentBoard[row, 0].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 1].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 2].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 3].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 4].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 5].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 6].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 7].Value</td>
-                <td>@_sudoku.CurrentBoard[row, 8].Value</td>
+                <td onchange="this.value = this.value == -1 ? '' : this.value">@_sudoku.CurrentBoard[r, 0].Value</td>
+                <td onchange="this.value = this.value == -1 ? '' : this.value">@_sudoku.CurrentBoard[r, 1].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 2].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 3].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 4].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 5].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 6].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 7].Value</td>
+                <td>@_sudoku.CurrentBoard[r, 8].Value</td>
             </tr> 
         }
     </tbody>
 </table>
 
-<div class="mt-3">
+<div class="mt-4">
     <button class="btn btn-primary" @onclick="Start">Start</button>
     <button class="btn btn-secondary" @onclick="GoHome" >Home</button>
+</div>
+
+<div class="mt-3" style="width: 500px;">
+    <label for="delayRange" class="form-label">@_delay millisecond delay between updates</label>
+    <input type="range" class="form-range" min="0" max="1000" id="delayRange" @bind="@_delay" @bind:event="oninput"/>
 </div>
 
 
@@ -86,6 +97,8 @@
 @code {
     Sudoku _sudoku;
     int _iteration;
+    int _delay = 500;
+    bool _solved;
     
     protected override void OnInitialized()
     {
@@ -103,23 +116,25 @@
     
     async void Start()
     {
-        for (var i = 0; i < 1_000; i++)
+        for (var i = 0; i < 10_000; i++)
         {
             _iteration = i;
             _sudoku.Solve();
+            StateHasChanged();
+            await Task.Delay(_delay);
             if (!_sudoku.ValidSolve())
             {
-                Console.WriteLine("Resetting the board");
                 _sudoku.Reset();
+                StateHasChanged();
+                await Task.Delay(_delay);
             }
             else
             {
-                Console.WriteLine($"Solved on iteration {i}");
+                _solved = true;
                 break;
             }
-            StateHasChanged();
-            await Task.Delay(50);
         }
+        StateHasChanged();
     }
 
 } 
