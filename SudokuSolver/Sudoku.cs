@@ -5,9 +5,9 @@ namespace SudokuSolver;
 public class Sudoku
 {
     // length of board
-    private const int Length = 9;
+    public static readonly int Width = 9;
     // height of board
-    private const int Height = 9;
+    public static readonly int Height = 9;
 
     // a snap shot to keep the starting state of this sudoku board
     private readonly int[,] _startingBoardSnapshot;
@@ -36,7 +36,7 @@ public class Sudoku
         // cells with a value already are marked as un-editable
         for(var y = 0; y < Height; y++)
         {
-            for (var x = 0; x < Length; x++)
+            for (var x = 0; x < Width; x++)
             {
                 if (fromValues[y, x] != -1)
                     boardInitialized[y, x] = new Cell { PossibleValues = new List<int> { fromValues[y,x] } };
@@ -74,7 +74,7 @@ public class Sudoku
         {
             
             // choose random cell and choose random value for that cell
-            var randX = Random.Shared.Next(0, Length);
+            var randX = Random.Shared.Next(0, Width);
             var randY = Random.Shared.Next(0, Height);
             CurrentBoard[randY,randX].ChooseValue();
             // update the board as the random value has been chosen
@@ -86,7 +86,7 @@ public class Sudoku
             for (var i = 0; i < CurrentBoard.LongLength; i++)
             {
                 // convert 1d index into 2d index
-                var x = i % Length;
+                var x = i % Width;
                 var y = i / Height;
                 
                 if (CurrentBoard[y, x].Value != -1) continue;
@@ -131,7 +131,7 @@ public class Sudoku
          */
         for(var y = 0; y < Height; y++)
         {
-            for (var x = 0; x < Length; x++)
+            for (var x = 0; x < Width; x++)
             {
                 var currentCell = cells[y, x];
                 
@@ -148,7 +148,7 @@ public class Sudoku
                 
                 
                 // iterate over all cells in the current cells row (x axis)
-                for (var rowCell = 0; rowCell < Length; rowCell++)
+                for (var rowCell = 0; rowCell < Width; rowCell++)
                 {
                     var val = cells[y, rowCell].Value;
                     currentCell.Remove(val);
@@ -235,7 +235,7 @@ public class Sudoku
         // check every row
         for(var y = 0; y < Height; y++)
         {
-            if (CellsInRow(CurrentBoard, y, Length).Sum(x => x.Value) != 45)
+            if (CellsInRow(CurrentBoard, y, Width).Sum(x => x.Value) != 45)
                 return false;
         }
     
@@ -243,7 +243,7 @@ public class Sudoku
         // https://stackoverflow.com/questions/5080538/c-sharp-determine-duplicate-in-list
         
         
-        for (var x = 0; x < Length; x++)
+        for (var x = 0; x < Width; x++)
         {
             // fetch cells for current column
             var cells = CellsInColumn(CurrentBoard, x, Height); 
