@@ -1,0 +1,75 @@
+@page "/"
+@using SudokuSolver.UI.Data
+@inject GridService _service
+
+<PageTitle>Sudoku Input</PageTitle>
+
+<style>
+td {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+tr:nth-of-type(3) td {
+     border-bottom: 3px solid red !important;
+}
+
+tr:nth-of-type(6) td {
+     border-bottom: 3px solid red !important;
+}
+
+
+td:nth-of-type(3) {
+     border-right: 3px solid red !important;
+}
+td:nth-of-type(6) {
+     border-right: 3px solid red !important;
+}
+
+td > input {
+    width: 50px;
+    height: 50px; 
+    text-align: center;
+}
+
+</style>
+
+
+
+
+<table class="sudokuGrid">
+    <tbody>
+    @for (var r = 0; r < 9; r++)
+    {
+        var row = r;
+        <tr> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,0])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,1])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,2])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,3])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,4])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,5])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,6])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,7])"/></td> 
+            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,8])"/></td> 
+        </tr> 
+    }
+    </tbody>
+</table>
+
+
+<button class="btn-primary" @onclick="SolveClicked" >Solve</button>
+
+@code {
+    string[,] cells = new string[9, 9];
+    
+    void SolveClicked()
+    {
+        // generate a grid from the cells replacing empty ones with -1
+        for(var i = 0; i < cells.Length; i++) {}
+        
+        // navigate to the solve page
+    }
+
+}
