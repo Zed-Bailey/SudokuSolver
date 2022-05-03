@@ -79,7 +79,7 @@ var sudoku = new Sudoku(boardValues);
 Sudoku.PrintBoard(sudoku.CurrentBoard);
 // PrintBoard(sudoku.Solve());
 
-Console.WriteLine("Start....");
+Console.WriteLine("Press [Enter] to start solving....");
 Console.ReadKey();
 
 for (var i = 0; i <= 10_000; i++)
