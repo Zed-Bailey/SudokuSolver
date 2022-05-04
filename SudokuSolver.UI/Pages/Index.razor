@@ -37,6 +37,7 @@ td > input {
 
 </style>
 
+<h3>Enter a sudoku puzzle</h3>
 
 <table class="sudokuGrid">
     <tbody>
@@ -60,7 +61,10 @@ td > input {
 
 <div class="mt-3">
     <button class="btn btn-primary" @onclick="SolveClicked" >Solve</button>
-
+    
+    <br/>
+    
+    <h5 class="mt-5">Use an example board</h5>
     <div class="btn-group" role="group">
         <button class="btn btn-secondary" @onclick="EasyBoardExample">Easy Board</button>  
         <button class="btn btn-secondary" @onclick="HardBoardExample">Hard Board</button>  
@@ -75,13 +79,13 @@ td > input {
     
     string[,] cells = new string[Height, Width];
 
-    protected override void OnInitialized()
-    {
-        if (_service.SudokuGrid != null)
-        {
-            _service.ClearGrid();
-        }
-    }
+    // protected override void OnInitialized()
+    // {
+    //     if (_service.SudokuGrid != null)
+    //     {
+    //         _service.ClearGrid();
+    //     }
+    // }
 
     void ExpertBoardExample()
     {
