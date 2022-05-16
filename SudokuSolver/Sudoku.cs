@@ -56,8 +56,8 @@ public class Sudoku
     /// May or may not return a full board as a cell may not always have a valid value
     /// simply reset the board and try again
     /// </summary>
-    /// <returns>A cell board, check if the board is valid with the ValidSolve function</returns>
-    public Cell[,] Solve()
+    /// <returns>An IEnumerable of all board states between each collapse</returns>
+    public IEnumerable<Cell[,]> Collapse()
     {
         // Update the boards cells
         UpdatePossibleValues(CurrentBoard);
@@ -79,6 +79,7 @@ public class Sudoku
             CurrentBoard[randY,randX].ChooseValue();
             // update the board as the random value has been chosen
             UpdatePossibleValues(CurrentBoard);
+            yield return CurrentBoard;
             
             var collapsed = true;
             // loop through all the cells in the board, check if the cell is collapsed
@@ -99,12 +100,16 @@ public class Sudoku
                 break;
             }
 
-            if (collapsed) return CurrentBoard;
+            
+
+            if (collapsed) yield break;
 
         }
 
-        return CurrentBoard;
+        yield return CurrentBoard;
     }
+
+    
 
     /// <summary>
     /// Resets the current board to a snapshot of the starting board
