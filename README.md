@@ -1,5 +1,6 @@
-# SudokuSolver
+# Sudoku Solver
 A sudoku solver using the waveform collapse algorithm
+
 This project was inspired by [this video](https://youtu.be/2SuvO4Gi7uY)
 
 
@@ -19,4 +20,18 @@ Should a full board be made, it is checked based on sudoku's rules
 The reason for the 45 sum is because it's the fastest check to see if a row is valid, 1+2+3+4+5+6+7+8+9 = 45
 A row/column/square can still sum to 45 with duplicates so a duplicate check is performed afterwards.
 
-Should any of these conditions fail, then the board is reset and the collapse function called.
+Should any of these conditions fail, then the board is reset and the collapse function redone.
+
+
+## Solver Interface
+
+enter your sudoku problem or select one of the buttons for a pre made problem
+<img width="500" alt="initial_screen" src=".github/initial_screen.png">
+
+The solve screen, press 'Start Solving' to run the algorithm
+<img width="500" alt="solve screen" src=".github/solve_screen.png">
+
+
+## Solving Demo
+
+<img width="500" alt="sudoku solver in action gif" src=".github/SudokuSolverInAction.gif">
