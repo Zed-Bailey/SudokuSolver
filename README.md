@@ -25,10 +25,12 @@ Should any of these conditions fail, then the board is reset and the collapse fu
 
 ## Solver Interface
 
-enter your sudoku problem or select one of the buttons for a pre made problem
-<img width="500" alt="initial_screen" src=".github/initial_screen.png">
+Enter your sudoku puzzle or select one of the buttons for a pre made problem
 
-The solve screen, press 'Start Solving' to run the algorithm
+<img width="500" alt="initial screen" src=".github/initial_screen.png">
+
+The solve screen, press 'Start Solving' to run the algorithm. You can adjust the time between state changes with the slider
+
 <img width="500" alt="solve screen" src=".github/solve_screen.png">
 
 
