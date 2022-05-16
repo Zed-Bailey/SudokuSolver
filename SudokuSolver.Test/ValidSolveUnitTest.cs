@@ -82,21 +82,20 @@ public class ValidSolveUnitTest
     public void InvalidSolveColumn45()
     {
         // the sum of the first column is 45 but it has duplicate numbers
-        // this will most likely pass as the rows will contain duplicate numbers
-        // this is a valid board
+        // each row has no duplicates though 
         var board = new int[,]
         {
-            {1,7,5, 9,2,1, 3,4,6},
-            {2,6,1, 7,5,4, 8,9,2},
-            {3,4,9, 8,6,3, 7,1,5},
+            {1,2,3, 4,5,6, 7,8,9},
+            {2,3,4, 5,6,7, 8,9,1},
+            {3,4,5, 6,7,8, 9,1,2},
             
-            {5,8,4 ,6,9,7, 1,2,3},
-            {5,1,3, 2,4,8, 6,5,9},
-            {6,2,6, 1,3,5, 4,8,7},
+            {5,6,7 ,8,9,1, 2,3,4},
+            {5,6,7 ,8,9,1, 2,3,4},
+            {6,7,8, 9,1,2, 3,4,5},
             
-            {7,9,7, 4,1,2, 5,3,8},
-            {8,5,8, 3,7,9, 2,6,4},
-            {8,3,2, 5,8,6, 9,7,1}
+            {7,8,9, 1,2,3, 4,5,6},
+            {8,6,1, 2,3,4, 5,6,7},
+            {8,6,1, 2,3,4, 5,6,7}
         };
         // create a new sudoku object and check that the board is valid
         var sudoku = new Sudoku(board);
