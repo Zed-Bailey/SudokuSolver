@@ -77,23 +77,31 @@ var boardValues = new int[,]
 var sudoku = new Sudoku(boardValues);
 
 Sudoku.PrintBoard(sudoku.CurrentBoard);
-// PrintBoard(sudoku.Solve());
 
 Console.WriteLine("Press [Enter] to start solving....");
 Console.ReadKey();
 
-for (var i = 0; i <= 10_000; i++)
+
+
+for (var i = 0; i < 10_000; i++)
 {
-    var solve = sudoku.Solve();
+    // collapse the board, getting all states from start to end
+    var collapseIterations = sudoku.Collapse();
+            
+    // display all states
+    foreach (var boardState in collapseIterations)
+    {
+        Sudoku.PrintBoard(boardState);
+    }
+
     if (!sudoku.ValidSolve())
     {
-        Sudoku.PrintBoard(sudoku.CurrentBoard);
-        Console.WriteLine("Resetting the board");
         sudoku.Reset();
+        Sudoku.PrintBoard(sudoku.CurrentBoard);
     }
     else
     {
-        Console.WriteLine($"Solved on iteration {i}");
+        Console.WriteLine($"Solved on iteration {i + 1}");
         Sudoku.PrintBoard(sudoku.CurrentBoard);
         break;
     }
