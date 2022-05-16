@@ -3,6 +3,7 @@
 @inject GridService _service
 @inject NavigationManager _navigation
 <style>
+
     td {
         width: 50px ;
         height: 50px ;
@@ -37,68 +38,69 @@
     .negativeOne {
         background-color: #ece1be;
     }
+    
+    .sudoku {
+        width: 500px;
+        height: 630px;
+    }
+
 </style>
-@if (_solved)
-{
-    <h3>Solved on iteration: @_iteration</h3>    
-}
-else
-{
-    <h3>Solve iteration: @_iteration</h3>
-}
 
 
-<table >
-    <tbody>
-    @for (var r = 0; r < Sudoku.Height; r++)
-    {
-        
-        <tr>
-            @for (var c = 0; c < Sudoku.Width; c++)
+
+<div class="d-flex justify-content-center">
+    
+    <div class="sudoku">
+            
+        @if (_solved)
+        {
+            <h3>Solved on iteration: @_iteration</h3>    
+        }
+        else
+        {
+            <h3>Solve iteration: @_iteration</h3>
+        }
+    
+    
+        <table >
+            <tbody>
+                @for (var r = 0; r < Sudoku.Height; r++)
+                {
+                    <tr>
+                        @for (var c = 0; c < Sudoku.Width; c++)
+                        {
+    
+                            var value = _currentBoardIteration[r, c].Value;
+                            var style = value == -1 ? "negativeOne" : "entered";
+                            <td class="@style">@(value == -1 ? "" : value)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    
+        <div class="mt-4">
+            @if (_solveButtonPressed)
             {
-                
-                var value = _sudoku.CurrentBoard[r, c].Value;
-                var style = value == -1 ? "negativeOne" : "entered";
-    
-                <td class="@style">@(value == -1 ? "" : value)</td>
+                <button class="btn btn-danger" @onclick="() => _solveButtonPressed = false">Stop Solving</button>
             }
-        </tr>
-    }
+            else
+            {
+                <button class="btn btn-primary" @onclick="Start">Start Solving</button>
+            }
+            
+            <button class="btn btn-secondary mx-lg-1" @onclick="GoHome">New Board</button>
+        </div>
     
-     @* @for (var r = 0; r < Sudoku.Height; r++) *@
-     @*    { *@
-     @*        <tr>  *@
-     @*            <td onchange="this.value = this.value == -1 ? '' : this.value">@_sudoku.CurrentBoard[r, 0].Value</td> *@
-     @*            <td onchange="this.value = this.value == -1 ? '' : this.value">@_sudoku.CurrentBoard[r, 1].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 2].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 3].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 4].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 5].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 6].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 7].Value</td> *@
-     @*            <td>@_sudoku.CurrentBoard[r, 8].Value</td> *@
-     @*        </tr>  *@
-     @*    } *@
-    </tbody>
-</table>
+        <div class="mt-3" style="width: 500px;">
+            <label for="delayRange" class="form-label">@_delay millisecond delay between updates</label>
+            <input type="range" class="form-range" min="0" max="1000" id="delayRange" @bind="@_delay" @bind:event="oninput"/>
+        </div>
+    
+    </div>
 
-<div class="mt-4">
-    @if (_solving)
-    {
-        <button class="btn btn-danger" @onclick="() => _solving = false">Stop Solving</button>
-    }
-    else
-    {
-        <button class="btn btn-primary" @onclick="Start">Start Solving</button>
-    }
-    
-    <button class="btn btn-secondary" @onclick="GoHome">Reset Board</button>
 </div>
 
-<div class="mt-3" style="width: 500px;">
-    <label for="delayRange" class="form-label">@_delay millisecond delay between updates</label>
-    <input type="range" class="form-range" min="0" max="1000" id="delayRange" @bind="@_delay" @bind:event="oninput"/>
-</div>
 
 
 
@@ -107,7 +109,8 @@ else
     int _iteration;
     int _delay = 500;
     bool _solved;
-    bool _solving;
+    bool _solveButtonPressed;
+    Cell[,] _currentBoardIteration;
     
     protected override void OnInitialized()
     {
@@ -119,39 +122,47 @@ else
         }
         
         _sudoku = _service.SudokuGrid;
+        _currentBoardIteration = _sudoku.CurrentBoard;
     }
 
     void GoHome() => _navigation.NavigateTo("/");
     
     async void Start()
     {
-        _solving = true;
-        
+        _solveButtonPressed = true;
         for (var i = 0; i < 10_000; i++)
         {
-            _iteration = i;
-            _sudoku.Solve();
-            StateHasChanged();
+            _iteration = i + 1;
+            // collapse the board, getting all states from start to end
+            var collapseIterations = _sudoku.Collapse();
             
-            // if solving is false
-            if(!_solving) break;
+            // display all states
+            foreach (var boardState in collapseIterations)
+            {
+                _currentBoardIteration = boardState;
+                // Sudoku.PrintBoard(boardState);
+                StateHasChanged();
+                await Task.Delay(_delay);
+            }
             
-            
-            await Task.Delay(_delay);
+            // stop solving if user has pressed the stop solving button
+            if (!_solveButtonPressed) break;
+
             if (!_sudoku.ValidSolve())
             {
                 _sudoku.Reset();
+                _currentBoardIteration = _sudoku.CurrentBoard;
                 StateHasChanged();
                 await Task.Delay(_delay);
             }
             else
             {
+                _solveButtonPressed = false;
                 _solved = true;
                 break;
             }
-            
         }
+        
         StateHasChanged();
     }
-
 } 
