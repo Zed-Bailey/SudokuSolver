@@ -24,8 +24,4 @@
     <ProjectReference Include="..\SudokuSolver\SudokuSolver.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="resources" />
-  </ItemGroup>
-
 </Project>

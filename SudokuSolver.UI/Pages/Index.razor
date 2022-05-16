@@ -1,6 +1,8 @@
 @page "/"
 @using SudokuSolver.UI.Data
+@using Microsoft.AspNetCore.Mvc.RazorPages
 @inject GridService _service
+@inject NavigationManager _navigation
 
 <PageTitle>Sudoku Input</PageTitle>
 
@@ -34,42 +36,149 @@ td > input {
 }
 
 </style>
+<div class="d-flex justify-content-center">
+    <div>
+        <h3>Enter a sudoku puzzle</h3>
+
+        <table class="sudokuGrid">
+            <tbody>
+            @for (var r = 0; r < Height; r++)
+            {
+                var row = r;
+                <tr> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,0])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,1])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,2])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,3])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,4])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,5])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,6])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,7])"/></td> 
+                    <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,8])"/></td> 
+                </tr> 
+            }
+            </tbody>
+        </table>
+
+        <div class="mt-3">
+            <div class="d-flex justify-content-center">
+                <button class="btn-lg btn-primary" @onclick="SolveClicked">Solve</button>    
+            </div>
+            
+
+            <br/>
+
+            <h5 class="mt-5">Use an example board</h5>
+            <div class="btn-group" role="group">
+                <button class="btn btn-secondary" @onclick="EasyBoardExample">Easy Board</button>
+                <button class="btn btn-secondary" @onclick="HardBoardExample">Hard Board</button>
+                <button class="btn btn-secondary" @onclick="ExpertBoardExample">Expert Board</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-
-
-<table class="sudokuGrid">
-    <tbody>
-    @for (var r = 0; r < 9; r++)
-    {
-        var row = r;
-        <tr> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,0])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,1])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,2])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,3])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,4])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,5])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,6])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,7])"/></td> 
-            <td><input type="text" maxlength="1" oninput="this.value = this.value.replace(/[^1-9]/g, '');" @bind="@(cells[row,8])"/></td> 
-        </tr> 
-    }
-    </tbody>
-</table>
-
-
-<button class="btn-primary" @onclick="SolveClicked" >Solve</button>
 
 @code {
-    string[,] cells = new string[9, 9];
+    const int Width = 9;
+    const int Height = 9;
+    
+    string[,] cells = new string[Height, Width];
+
+    // protected override void OnInitialized()
+    // {
+    //     if (_service.SudokuGrid != null)
+    //     {
+    //         _service.ClearGrid();
+    //     }
+    // }
+
+    void ExpertBoardExample()
+    {
+        var boardValues = new int[,]
+        {
+            {4,-1,-1,   6,-1,-1,   -1,1,-1},
+            {-1,-1,-1,  -1,-1,-1,   6,-1,-1},
+            {-1,-1,-1,  -1,-1,9,    8,-1,2},
+    
+            {-1,7,-1,   4,-1,-1,  -1,-1,-1},
+            {-1,-1,-1,  -1,6,-1,  -1,-1,-1},
+            {1,-1,5,    9,-1,-1,  -1,4,-1},
+    
+            {5,-1,-1,  -1,-1,-1,  -1,8,-1},
+            {2,-1,8,    1,-1,-1,  -1,-1,-1},
+            {-1,-1,-1,  -1,-1,-1,  7,3,-1},
+        };
+        _service.SudokuGrid = new Sudoku(boardValues);
+        // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+    }
+
+    void EasyBoardExample()
+    {
+        var boardValues = new int[,]
+        {
+            {-1,7,-1,  -1,2,-1,  -1,4,6},
+            {-1,6,-1,  -1,-1,-1,   8,9,-1},
+            {2,-1,-1,  8,-1,-1,   7,1,5},
+            
+            {-1,8,4,   -1,9,7,   -1,-1,-1},
+            {7,1,-1,   -1,-1,-1,  -1,5,9},
+            {-1,-1,-1,  1,3,-1,   4,8,-1},
+            
+            {6,9,7,    -1,-1,2,    -1,-1,8},
+            {-1,5,8,   -1,-1,-1,   -1,6,-1},
+            {4,3,-1,   -1,8,-1,    -1,7,-1},
+        };
+        _service.SudokuGrid = new Sudoku(boardValues);
+        // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+    }
+
+    void HardBoardExample()
+    {
+        var boardValues = new int[,]
+        {
+            {-1,-1,4,  -1,-1,-1,  -1,-1,-1},
+            {8,1,-1,  -1,-1,9,    2,7,-1},
+            {-1,-1,7,  -1,5,-1,   9,-1,-1},
+            
+            {1,-1,5,  -1,-1,6,  -1,-1,3},
+            {3,-1,-1,  1,-1,-1,  -1,-1,-1},
+            {-1,-1,-1,  5,7,-1,  -1,6,-1},
+            
+            {4,5,1,  -1,9,-1,  -1,-1,-1},
+            {-1,3,-1,  -1,1,5,  -1,-1,-1},
+            {9,-1,-1,  -1,3,-1,  -1,-1,6},
+        };
+        _service.SudokuGrid = new Sudoku(boardValues);
+        // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+    }
+    
     
     void SolveClicked()
     {
-        // generate a grid from the cells replacing empty ones with -1
-        for(var i = 0; i < cells.Length; i++) {}
+
+        var grid = new int[Height, Width];
+        
+        // parse the table cells into an int grid, replacing empty/null values with -1
+        for (var y = 0; y < Height; y++)
+        {
+            for (var x = 0; x < Width; x++)
+            {
+                // a cell by default has a value of null, it will have a value of an empty string when 
+                // a user enters anything that's not a digit in 1-9
+                grid[y, x] = (cells[y, x] == "" || cells[y,x] == null) ? -1 : int.Parse(cells[y, x]);
+            }
+        }
+
+        _service.SudokuGrid = new Sudoku(grid);
         
         // navigate to the solve page
+        _navigation.NavigateTo("/solve");
+        
     }
 
 }

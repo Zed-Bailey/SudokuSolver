@@ -2,7 +2,10 @@ namespace SudokuSolver.UI.Data;
 
 public class GridService
 {
-    public Grid SudokuGrid { get; set; }
-    
-    
+    public Sudoku? SudokuGrid { get; set; }
+
+    public void ClearGrid()
+    {
+        SudokuGrid = null;
+    }
 }
