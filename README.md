@@ -1,5 +1,5 @@
 # Sudoku Solver
-A sudoku solver using the waveform collapse algorithm
+A sudoku solver using the wavefunction collapse algorithm
 
 This project was inspired by [this video](https://youtu.be/2SuvO4Gi7uY)
 
