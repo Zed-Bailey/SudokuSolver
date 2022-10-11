@@ -24,7 +24,7 @@ Should any of these conditions fail, then the board is reset and the collapse fu
 
 
 ## Solver Interface
-To use the web interface, navigate to `Solver.UI` and execute `dotnet run` the interface will be available on localhost
+To use the web interface, navigate to `SudokuSolver.UI` and execute `dotnet run` the interface will be available on localhost
 
 
 Enter your sudoku puzzle or select one of the buttons for a pre made problem
